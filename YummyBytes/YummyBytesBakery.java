@@ -4,12 +4,16 @@
  * Allows you to caculate the price of an amount of baked goods.
  * Opens the store and displays a little text based menu, not completely functional of course.
  * 
+ * 10202024
  * __Now has an array to hold 12 pastries in a case
  * __Array for each baked good
  * __Case 6 has been updated to use methods that print out each array in a list format
  *
+ * __Looping and user input in terminal
+ * __Changes to sellCookie() , sellMuffin() , sellDoughnut()
+ *
  * @author Gage R
- * @version 10202024
+ * @version 10302024
  */
 public class YummyBytesBakery
 {
@@ -17,44 +21,46 @@ public class YummyBytesBakery
     private final double COOKIE_PRICE;
     private final double DOUGHNUT_PRICE;
     private final double MUFFIN_PRICE;
-    
+
     public static double register; //register of the bakery
-    
+
     //pastry variables
     private Cookie cookie;
     private Doughnut doughnut;
     private Muffin muffin;
-    
+
     //Arrays of pastries
     private Cookie[][] cookieCase;
     private Muffin[][] muffinCase;
     private Doughnut[][] doughnutCase;
-    
-    
+
+    private java.util.Scanner reader;
+
     //default constructor
-     YummyBytesBakery()
-     {
-         COOKIE_PRICE = 0.25;
-         DOUGHNUT_PRICE = 1.50;
-         MUFFIN_PRICE = 0.75;
-         register = 100.00;
-         cookieCase = new Cookie[3][4];
-         muffinCase = new Muffin[3][4];
-         doughnutCase = new Doughnut[3][4];
-         
-         testData();
+    YummyBytesBakery()
+    {
+        COOKIE_PRICE = 0.25;
+        DOUGHNUT_PRICE = 1.50;
+        MUFFIN_PRICE = 0.75;
+        register = 100.00;
+        cookieCase = new Cookie[3][4];
+        muffinCase = new Muffin[3][4];
+        doughnutCase = new Doughnut[3][4];
+        reader = new java.util.Scanner(System.in);
+        testData();
     }
-     
-     //getter/setter for the register
+
+    //getter/setter for the register
     double gRegister()
     {
         return register;
     }
+
     public void nRegister(double nRegister)
     {
         register = nRegister;
     }
-    
+
     /**
      * Displays a welcome message in the terminal
      */
@@ -64,80 +70,226 @@ public class YummyBytesBakery
         System.out.println("We sell an array of various pastries and other desserts.");
         System.out.println("");
     }
-    
+
     //Sells pastries
     /**
      * sells the cookies and totals and displays the amount
+     * adds money to the register with each successful purchase
      * if you give too little money it won't give baked goods ;w;
-     * 
-     * @param amount The amount of cookies you want to buy
-     * @param cusPay The amount of money you are giving to pay
+     * error checks responses 
+     * allows multiple purchases in a row
      */
-    public void sellCookies(int amount, double cusPay)
+    public void sellCookies()
     {
         double i;
-        
-        i = amount * COOKIE_PRICE;
-        System.out.println("Your total is $"+i);
-        if (cusPay >= i)
-        {
-            System.out.println("Thanks for your money, enjoy your cookie.");
-            register += i;
-        }
-        else
-        {
-            System.out.println("Come back with money, broke boy.");
-        }
+        int amount;
+        boolean wantCookie;
+        boolean didPay;
+        boolean valid;
+
+        do{
+            wantCookie = false;
+            do
+            {
+                valid = false;
+                System.out.println("How many cookies would you like?");
+                amount = reader.nextInt();
+                reader.nextLine();
+                if (amount > 0)
+                {
+                    valid = true;
+                }
+                else
+                {
+                    System.out.println("Enter a valid number");
+                }
+            }while(valid == false);
+            i = amount * COOKIE_PRICE;
+            do{
+                didPay = false;
+
+                System.out.println("Your total is $"+i);
+                System.out.println("How much are you going to pay?");
+                int cusPay = reader.nextInt();
+                reader.nextLine();
+                if (cusPay >= i)
+                {
+                    System.out.println("Thanks for your money, enjoy your cookie.");
+                    register += i;
+                    didPay = true;
+                }
+                else
+                {
+                    System.out.println("You have to pay you know");
+                }
+            }while(didPay == false);
+
+            System.out.println("Would you like some more cookies? (y/n)");
+            do{
+                String response = reader.nextLine();
+                valid = true;
+                if(response.substring(0,1).equals("y"))
+                {
+                    wantCookie = true;
+                }
+                else if(response.substring(0,1).equals("n"))
+                {
+                    wantCookie = false;
+                }
+                else
+                {
+                    System.out.println("Enter a valid answer");
+                    valid = false;
+                }
+            }while(valid == false);
+        }while(wantCookie == true);
     }
-    
+
     /**
      * sells the muffins and totals and displays the amount
+     * adds money to the register with each successful purchase
+     * allows multiple purchases in a row
      * if you give too little money it won't give baked goods ;w;
-     * 
-     * @param amount The amount of cookies you want to buy
-     * @param cusPay The amount of money you are giving to pay
+     * does a bunch of error checking
      */
-    public void sellMuffins(int amount, double cusPay)
+    public void sellMuffins()
     {
         double i;
-        
-        i = amount * MUFFIN_PRICE;
-        System.out.println("Your total is $"+i);
-        if (cusPay >= i)
-        {
-            System.out.println("Thanks for your money, enjoy your moofin.");
-            register += i;
-        }
-        else
-        {
-            System.out.println("Come back with money, broke boy.");
-        }
+        int amount;
+        boolean wantMuffin;
+        boolean didPay;
+        boolean valid;
+
+        do{
+            wantMuffin = false;
+            do
+            {
+                valid = false;
+                System.out.println("How many muffins would you like?");
+                amount = reader.nextInt();
+                reader.nextLine();
+                if (amount > 0)
+                {
+                    valid = true;
+                }
+                else
+                {
+                    System.out.println("Enter a valid number");
+                }
+            }while(valid == false);
+            i = amount * MUFFIN_PRICE;
+            do{
+                didPay = false;
+
+                System.out.println("Your total is $"+i);
+                System.out.println("How much are you going to pay?");
+                int cusPay = reader.nextInt();
+                reader.nextLine();
+                if (cusPay >= i)
+                {
+                    System.out.println("Thanks for your money, enjoy your moofin.");
+                    register += i;
+                    didPay = true;
+                }
+                else
+                {
+                    System.out.println("You have to pay you know");
+                }
+            }while(didPay == false);
+
+            System.out.println("Would you like some more muffins? (y/n)");
+            do{
+                String response = reader.nextLine();
+                valid = true;
+                if(response.substring(0,1).equals("y"))
+                {
+                    wantMuffin = true;
+                }
+                else if(response.substring(0,1).equals("n"))
+                {
+                    wantMuffin = false;
+                }
+                else
+                {
+                    System.out.println("Enter a valid answer");
+                    valid = false;
+                }
+            }while(valid == false);
+        }while(wantMuffin == true);
     }
-    
+
     /**
      * sells the doughnut and totals and displays the amount
+     * allows multiple purchases in a row
      * if you give too little money it won't give baked goods ;w;
-     * 
-     * @param amount The amount of cookies you want to buy
-     * @param cusPay The amount of money you are giving to pay
+     * adds money to the register with each purchase
      */
-    public void sellDoughnuts(int amount, double cusPay)
+    public void sellDoughnuts()
     {
         double i;
-        
-        i = amount * DOUGHNUT_PRICE;
-        System.out.println("Your total is $"+i);
-        if (cusPay >= i)
-        {
-            System.out.println("Thanks for your money, enjoy your glazed bagel.");
-            register += i;
-        }
-        else
-        {
-            System.out.println("Come back with money, broke boy.");
-        }
+        int amount;
+        boolean wantDoughnut;
+        boolean didPay;
+        boolean valid;
+
+        do{
+            wantDoughnut = false;
+            do
+            {
+                valid = false;
+                System.out.println("How many doughnuts would you like?");
+                amount = reader.nextInt();
+                reader.nextLine();
+                if (amount > 0)
+                {
+                    valid = true;
+                }
+                else
+                {
+                    System.out.println("Enter a valid number");
+                }
+            }while(valid == false);
+            i = amount * DOUGHNUT_PRICE;
+            do{
+                didPay = false;
+
+                System.out.println("Your total is $"+i);
+                System.out.println("How much are you going to pay?");
+                int cusPay = reader.nextInt();
+                reader.nextLine();
+                if (cusPay >= i)
+                {
+                    System.out.println("Thanks for your money, enjoy your doughnut.");
+                    register += i;
+                    didPay = true;
+                }
+                else
+                {
+                    System.out.println("You have to pay you know");
+                }
+            }while(didPay == false);
+
+            System.out.println("Would you like some more doughnuts? (y/n)");
+            do{
+                String response = reader.nextLine();
+                valid = true;
+                if(response.substring(0,1).equals("y"))
+                {
+                    wantDoughnut = true;
+                }
+                else if(response.substring(0,1).equals("n"))
+                {
+                    wantDoughnut = false;
+                }
+                else
+                {
+                    System.out.println("Enter a valid answer");
+                    valid = false;
+                }
+            }while(valid == false);
+        }while(wantDoughnut == true);
     }
-    
+
     /**
      * Displays the order options in the terminal
      */
@@ -148,7 +300,7 @@ public class YummyBytesBakery
         System.out.println("    Doughnut");
         System.out.println("    Muffin");
     }
-    
+
     /**
      * Tests the data
      */
@@ -157,12 +309,12 @@ public class YummyBytesBakery
         cookie = new Cookie(2.5, 0.75, 1.0, 0.0, 1.0, "Chocolate Chip");
         muffin = new Muffin(3.0, 0.5, 1.0, 1.5, 3, 1.25, 1.0, "Blueberry");
         doughnut = new Doughnut(2.0, 1, 2.5, 3, 1.0, 3.0, "Boston Cream");
-        
+
         fillCookieCase(cookie);
         fillMuffinCase(muffin);
         fillDoughnutCase(doughnut);
     }
-    
+
     /**
      * A "main menu" that appears in the terminal
      */
@@ -178,7 +330,7 @@ public class YummyBytesBakery
         System.out.println("7 - Help");
         System.out.println("8 - Exit");
     }
-    
+
     /**
      * Allows user to select a menus option and prints what option that they chose
      */
@@ -186,40 +338,46 @@ public class YummyBytesBakery
     {
         welcomeMessage();
         mainMenuOpts();
-        int option = 23;
-        switch (option)
+        boolean wantOut = false;
+        do
         {
-            case 1:
-                System.out.println("You selected \"See our cookie menu\"");
-                break;
-            case 2:
-                System.out.println("You selected \"See our muffin menu\"");
-                break;
-            case 3:
-                System.out.println("You selected \"See our doughnut menu\"");
-                break;
-            case 4:
-                System.out.println("You selected \"See our dietary options\"");
-                break;
-            case 5:
-                System.out.println("You selected \"Place an order\"");
-                break;
-            case 6:
-                printCookieCase();
-                printDoughnutCase();
-                printMuffinCase();
-                break;
-            case 7:
-                System.out.println("You selected \"Help\"");
-                break;
-            case 8:
-                System.out.println("You selected \"Exit\"");
-                break;
-            default:
-                System.out.println("Pick another number choom");
-        }
+            int option = reader.nextInt();
+            reader.nextLine();
+            switch (option)
+            {
+                case 1:
+                    System.out.println("You selected \"See our cookie menu\"");
+                    break;
+                case 2:
+                    System.out.println("You selected \"See our muffin menu\"");
+                    break;
+                case 3:
+                    System.out.println("You selected \"See our doughnut menu\"");
+                    break;
+                case 4:
+                    System.out.println("You selected \"See our dietary options\"");
+                    break;
+                case 5:
+                    System.out.println("You selected \"Place an order\"");
+                    break;
+                case 6:
+                    printCookieCase();
+                    printDoughnutCase();
+                    printMuffinCase();
+                    break;
+                case 7:
+                    printHelp();
+                    break;
+                case 8:
+                    System.out.println("Goodbye");
+                    wantOut = true;
+                    break;
+                default:
+                    System.out.println("Pick another number choom");
+            }
+        }while(wantOut == false);
     }
-    
+
     /**
      * Fills the cookie case with selected cookie
      * 
@@ -229,7 +387,7 @@ public class YummyBytesBakery
     {
         cookieCase = new Cookie[][] {{cookie, cookie, cookie, cookie},{cookie, cookie, cookie, cookie},{cookie, cookie, cookie, cookie}};
     }
-    
+
     /**
      * Fills the muffin case with selected muffins
      * 
@@ -239,7 +397,7 @@ public class YummyBytesBakery
     {
         muffinCase = new Muffin[][] {{muffin, muffin, muffin, muffin},{muffin, muffin, muffin, muffin},{muffin, muffin, muffin, muffin}};
     }
-    
+
     /**
      * Fills the doughnut case with selected doughnuts
      * 
@@ -249,7 +407,7 @@ public class YummyBytesBakery
     {
         doughnutCase = new Doughnut[][] {{doughnut, doughnut, doughnut, doughnut},{doughnut, doughnut, doughnut, doughnut},{doughnut, doughnut, doughnut, doughnut}};
     }
-    
+
     /**
      *  Displays what all cookies are in the case
      */
@@ -269,7 +427,7 @@ public class YummyBytesBakery
         System.out.println("11) " + cookieCase[2][2].name());
         System.out.println("12) " + cookieCase[2][3].name());
     }
-    
+
     /**
      * Displays what all doughnuts are in the case
      */
@@ -289,9 +447,9 @@ public class YummyBytesBakery
         System.out.println("11) " + doughnutCase[2][2].name());
         System.out.println("12) " + doughnutCase[2][3].name());
     }
-    
-    /*
-     * 
+
+    /**
+     * Displays what all muffins in a case
      */
     public void printMuffinCase()
     {
@@ -308,6 +466,22 @@ public class YummyBytesBakery
         System.out.println("10) " + muffinCase[2][1].name());
         System.out.println("11) " + muffinCase[2][2].name());
         System.out.println("12) " + muffinCase[2][3].name());
+    }
+
+    /**
+     * Displays a 'Help Menu' that describes what all the inputs do
+     */
+    public void printHelp()
+    {
+        System.out.println("Please input a number that matches one of the menu options");
+        System.out.println("Input 1 to see the COOKIE menu");
+        System.out.println("Input 2 to see the DOUGHNUT menu");
+        System.out.println("Input 3 to see the MUFFIN menu");
+        System.out.println("Input 4 to see all dietary pastry options");
+        System.out.println("Input 5 to place an order");
+        System.out.println("Input 6 to see what is available");
+        System.out.println("Input 7 to see this menu again");
+        System.out.println("Input 8 to exit");
     }
 }
 
