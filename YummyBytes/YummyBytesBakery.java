@@ -9,11 +9,15 @@
  * __Array for each baked good
  * __Case 6 has been updated to use methods that print out each array in a list format
  *
+ * 10302024
  * __Looping and user input in terminal
  * __Changes to sellCookie() , sellMuffin() , sellDoughnut()
  *
+ * 10312024
+ * __Added checkCookieCaseQuantity() , checkDoughnutCaseQuantity() , checkMuffinCaseQuantity()
+ * 
  * @author Gage R
- * @version 10302024
+ * @version 10312024
  */
 public class YummyBytesBakery
 {
@@ -483,5 +487,67 @@ public class YummyBytesBakery
         System.out.println("Input 7 to see this menu again");
         System.out.println("Input 8 to exit");
     }
-}
 
+    /**
+     * Checks the quanity of the specific cookie in the cookie case
+     * 
+     * @param cookieName Represents the name of the cookie you want to know the quantity of
+     */
+    public void checkCookieCaseQuantity(String cookieName)
+    {
+        int quantity = 0;
+        for(int r = 0; r < cookieCase.length; r++)
+        {   
+            for(int c = 0; c < cookieCase[0].length; c++)
+            {
+                if(cookieCase[r][c].name() == cookieName)
+                {
+                    quantity++;
+                }
+            }
+        }
+        System.out.println(quantity);
+    }
+
+    /**
+     * Checks the quantity of a specific doughnut in the doughnut case
+     * 
+     * @param doughnutName Represents the name of the doughnut you want to know the quantity of
+     */
+    public void checkDoughnutCaseQuantity(String doughnutName)
+    {
+        int quantity = 0;
+        for(int r = 0; r < doughnutCase.length; r++)
+        {   
+            for(int c = 0; c < doughnutCase[0].length; c++)
+            {
+                if(doughnutCase[r][c].name() == doughnutName)
+                {
+                    quantity++;
+                }
+            }
+        }
+        System.out.println(quantity);
+    }
+
+    /**
+     * Checks the quantity of a specific muffin in the muffinCase
+     * 
+     * @param muffinName Represents the name of the muffin you want to know the quantity of
+     */
+    public void checkMuffinCaseQuantity(String muffinName)
+    {
+        int quantity = 0;
+        for(int r = 0; r < muffinCase.length; r++)
+        {   
+            for(int c = 0; c < muffinCase[0].length; c++)
+            {
+                if(muffinCase[r][c].name() == muffinName)
+                {
+                    quantity++;
+                }
+            }
+        }
+        System.out.println(quantity);
+    }
+}
