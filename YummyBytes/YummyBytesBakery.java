@@ -16,8 +16,12 @@
  * 10312024
  * __Added checkCookieCaseQuantity() , checkDoughnutCaseQuantity() , checkMuffinCaseQuantity()
  * 
+ * 10312024.2
+ * __Added removeCookies(), removeDoughnuts(), removeMuffins()
+ * __Updated printCookieCase() , printDoughnutCase() , printMuffinCase()
+ * 
  * @author Gage R
- * @version 10312024
+ * @version 10312024.2
  */
 public class YummyBytesBakery
 {
@@ -414,62 +418,83 @@ public class YummyBytesBakery
 
     /**
      *  Displays what all cookies are in the case
+     *  
+     *  Displays ' - - - ' if null
      */
     public void printCookieCase()
     {
         System.out.println("=== COOKIE CASE ===");
-        System.out.println("1) " + cookieCase[0][0].name());
-        System.out.println("2) " + cookieCase[0][1].name());
-        System.out.println("3) " + cookieCase[0][2].name());
-        System.out.println("4) " + cookieCase[0][3].name());
-        System.out.println("5) " + cookieCase[1][0].name());
-        System.out.println("6) " + cookieCase[1][1].name());
-        System.out.println("7) " + cookieCase[1][2].name());
-        System.out.println("8) " + cookieCase[1][3].name());
-        System.out.println("9) " + cookieCase[2][0].name());
-        System.out.println("10) " + cookieCase[2][1].name());
-        System.out.println("11) " + cookieCase[2][2].name());
-        System.out.println("12) " + cookieCase[2][3].name());
+        int num = 1;
+        for(int r = 0; r < cookieCase.length; r++)
+        {
+            for(int c = 0; c < cookieCase[0].length; c++)
+            {
+                System.out.print(num + ") ");
+                if(cookieCase[r][c] == null)
+                {
+                    System.out.println(" - - - ");
+                }
+                else
+                {
+                    System.out.println(cookieCase[r][c].name());
+                }
+                num++;
+            }   
+        }
     }
-
+    
     /**
      * Displays what all doughnuts are in the case
+     * 
+     * Displays ' - - - ' if null
      */
     public void printDoughnutCase()
     {
         System.out.println("=== DOUGHNUT CASE ===");
-        System.out.println("1) " + doughnutCase[0][0].name());
-        System.out.println("2) " + doughnutCase[0][1].name());
-        System.out.println("3) " + doughnutCase[0][2].name());
-        System.out.println("4) " + doughnutCase[0][3].name());
-        System.out.println("5) " + doughnutCase[1][0].name());
-        System.out.println("6) " + doughnutCase[1][1].name());
-        System.out.println("7) " + doughnutCase[1][2].name());
-        System.out.println("8) " + doughnutCase[1][3].name());
-        System.out.println("9) " + doughnutCase[2][0].name());
-        System.out.println("10) " + doughnutCase[2][1].name());
-        System.out.println("11) " + doughnutCase[2][2].name());
-        System.out.println("12) " + doughnutCase[2][3].name());
+        int num = 1;
+        for(int r = 0; r < doughnutCase.length; r++)
+        {
+            for(int c = 0; c < doughnutCase[0].length; c++)
+            {
+                System.out.print(num + ") ");
+                if(doughnutCase[r][c] == null)
+                {
+                    System.out.println(" - - - ");
+                }
+                else
+                {
+                    System.out.println(doughnutCase[r][c].name());
+                }
+                num++;
+            }
+        }
     }
 
     /**
      * Displays what all muffins in a case
+     * 
+     * Displays ' - - - ' if null
      */
     public void printMuffinCase()
     {
         System.out.println("=== MUFFIN CASE ===");
-        System.out.println("1) " + muffinCase[0][0].name());
-        System.out.println("2) " + muffinCase[0][1].name());
-        System.out.println("3) " + muffinCase[0][2].name());
-        System.out.println("4) " + muffinCase[0][3].name());
-        System.out.println("5) " + muffinCase[1][0].name());
-        System.out.println("6) " + muffinCase[1][1].name());
-        System.out.println("7) " + muffinCase[1][2].name());
-        System.out.println("8) " + muffinCase[1][3].name());
-        System.out.println("9) " + muffinCase[2][0].name());
-        System.out.println("10) " + muffinCase[2][1].name());
-        System.out.println("11) " + muffinCase[2][2].name());
-        System.out.println("12) " + muffinCase[2][3].name());
+        int num = 1;
+        for(int r = 0; r < muffinCase.length; r++)
+        {
+            for(int c = 0; c < muffinCase[0].length; c++)
+            {
+                System.out.print(num + ") ");
+                if(muffinCase[r][c] == null)
+                {
+                    System.out.println(" - - -");
+                }
+                else
+                {
+                    System.out.println(muffinCase[r][c].name());
+                }
+                num++;
+            }
+        }
     }
 
     /**
@@ -549,5 +574,68 @@ public class YummyBytesBakery
             }
         }
         System.out.println(quantity);
+    }
+    
+    /**
+     * Removes a quantity and type of cookie inputted by the user from the cookieCase array
+     * 
+     * @param amount Represents the amount of cookies you want to remove
+     * @param cookieName Represents the name of the cookie you want to remove
+     */
+    public void removeCookies(int amount, String cookieName)
+    {
+        for(int r = 0; r < cookieCase.length; r++)
+        {
+            for(int c = 0; c < cookieCase[0].length; c++)
+            {
+                if(cookieCase[r][c].name() == cookieName && amount > 0)
+                {
+                    cookieCase[r][c] = null;
+                    amount--;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Removes a quantity and type of dougnut inputted by the user from the doughnutCase array
+     * 
+     * @param amount Represents the amount of doughnuts you want to remove
+     * @param doughnutName Represents the name of the doughnuts you want to remove
+     */
+    public void removeDoughnuts(int amount, String doughnutName)
+    {
+        for(int r = 0; r < doughnutCase.length; r++)
+        {
+            for(int c = 0; c < doughnutCase[0].length; c++)
+            {
+                if(doughnutCase[r][c].name() == doughnutName && amount > 0)
+                {
+                    doughnutCase[r][c] = null;
+                    amount--;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Removes a quantity and type of cookie inputted by the user from the muffinCase array
+     * 
+     * @param amount Represents the amount of muffins you want to remove
+     * @param cookieName Represents the name of the muffin you want to remove
+     */
+    public void removeMuffins(int amount, String muffinName)
+    {
+        for(int r = 0; r < muffinCase.length; r++)
+        {
+            for(int c = 0; c < muffinCase[0].length; c++)
+            {
+                if(muffinCase[r][c].name() == muffinName && amount > 0)
+                {
+                    muffinCase[r][c] = null;
+                    amount--;
+                }
+            }
+        }
     }
 }
