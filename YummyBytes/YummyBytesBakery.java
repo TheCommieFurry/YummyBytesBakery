@@ -25,10 +25,13 @@
  * __Several changes to sellCookie(), sellMuffin(), sellDoughnut()
  * __Changes to printOrderOption()
  * 
- * -- A LOT IS NOT WORKING RN --
+ * 11122024
+ * __Fixed printOrderCookies(), printOrderMuffins(),printOrderDoughnuts()
+ * __Changes to checkCookieCaseQuantity(), checkDoughnutCaseQuantity(), checkMuffinCaseQuantity()
+ *   -- i was using == to compare objects instead of .equals(), this fixed all my issues with this
  * 
  * @author Gage R
- * @version 11062024
+ * @version 11122024
  */
 public class YummyBytesBakery
 {
@@ -99,9 +102,6 @@ public class YummyBytesBakery
      * allows multiple purchases in a row
      * checks if there is enough of inputed type of cookie in the case for the purchase
      * removes cookies from the case with each purchase
-     * 
-     * -- DOES NOT CURRENTLY WORK , checkCookieCaseQuantity does not read the inputed string for some reason. 
-     * -- Make sure to remove the 'or' statement in the if elses when you figure it out on this one and the other sell methods
      */
     public void sellCookies()
     {
@@ -111,8 +111,7 @@ public class YummyBytesBakery
 
         System.out.println("What type of cookie would you like?");
         String type = reader.nextLine();
-
-        if(checkCookieCaseQuantity(type) < 0 || 10 == 10)
+        if(checkCookieCaseQuantity(type) > 0)
         {
             do
             {
@@ -122,7 +121,7 @@ public class YummyBytesBakery
                 reader.nextLine();
                 if (amount > 0)
                 {
-                    if (checkCookieCaseQuantity(type) >= amount || 10 >= amount)
+                    if (checkCookieCaseQuantity(type) >= amount)
                     {
                         valid = true;
                     }
@@ -150,6 +149,7 @@ public class YummyBytesBakery
                     register += i;
                     removeCookies(amount, "Chocolate Chip");
                     didPay = true;
+                    valid = true;
                 }
                 else
                 {
@@ -171,8 +171,6 @@ public class YummyBytesBakery
      * does a bunch of error checking
      * checks if there is enough of inputed type of cookie in the case for the purchase
      * removes cookies from the case with each purchase
-     * 
-     * -- ALSO DOESN'T WORK
      */
     public void sellMuffins()
     {
@@ -183,7 +181,7 @@ public class YummyBytesBakery
         System.out.println("What type of muffin would you like?");
         String type = reader.nextLine();
 
-        if(checkMuffinCaseQuantity(type) < 0 || 10 == 10)
+        if(checkMuffinCaseQuantity(type) > 0)
         {
             do
             {
@@ -193,7 +191,7 @@ public class YummyBytesBakery
                 reader.nextLine();
                 if (amount > 0)
                 {
-                    if (checkMuffinCaseQuantity(type) >= amount || 10 >= amount)
+                    if (checkMuffinCaseQuantity(type) >= amount)
                     {
                         valid = true;
                     }
@@ -253,7 +251,7 @@ public class YummyBytesBakery
         System.out.println("What type of doughnut would you like?");
         String type = reader.nextLine();
 
-        if(checkDoughnutCaseQuantity(type) < 0 || 10 == 10)
+        if(checkDoughnutCaseQuantity(type) > 0)
         {
             do
             {
@@ -263,7 +261,7 @@ public class YummyBytesBakery
                 reader.nextLine();
                 if (amount > 0)
                 {
-                    if (checkDoughnutCaseQuantity(type) >= amount || 10 >= amount)
+                    if (checkDoughnutCaseQuantity(type) >= amount)
                     {
                         valid = true;
                     }
@@ -393,7 +391,7 @@ public class YummyBytesBakery
                     System.out.println("You selected \"See our dietary options\"");
                     break;
                 case 5:
-                    System.out.println("You selected \"Place an order\"");
+                    printOrderOption();
                     break;
                 case 6:
                     printCookieCase();
@@ -552,9 +550,12 @@ public class YummyBytesBakery
         {   
             for(int c = 0; c < cookieCase[0].length; c++)
             {
-                if(cookieCase[r][c].name() == cookieName)
-                {
-                    quantity++;
+                if(cookieCase[r][c] != null)
+                {   
+                    if(cookieCase[r][c].name().equals(cookieName))
+                    {
+                        quantity++;
+                    }
                 }
             }
         }
@@ -574,7 +575,7 @@ public class YummyBytesBakery
         {   
             for(int c = 0; c < doughnutCase[0].length; c++)
             {
-                if(doughnutCase[r][c].name() == doughnutName)
+                if(doughnutCase[r][c].name().equals(doughnutName))
                 {
                     quantity++;
                 }
@@ -596,7 +597,7 @@ public class YummyBytesBakery
         {   
             for(int c = 0; c < muffinCase[0].length; c++)
             {
-                if(muffinCase[r][c].name() == muffinName)
+                if(muffinCase[r][c].name().equals(muffinName))
                 {
                     quantity++;
                 }
@@ -618,10 +619,13 @@ public class YummyBytesBakery
         {
             for(int c = 0; c < cookieCase[0].length; c++)
             {
-                if(cookieCase[r][c].name() == cookieName && amount > 0)
+                if(cookieCase[r][c] != null)
                 {
-                    cookieCase[r][c] = null;
-                    amount--;
+                    if(cookieCase[r][c].name() == cookieName && amount > 0)
+                    {
+                        cookieCase[r][c] = null;
+                        amount--;
+                    }
                 }
             }
         }
@@ -684,11 +688,11 @@ public class YummyBytesBakery
             do{
                 String response = reader.nextLine();
                 valid = true;
-                if(response.substring(0,1).equals("y"))
+                if(response.substring(0,1).toLowerCase().equals("y"))
                 {
                     wantCookie = true;
                 }
-                else if(response.substring(0,1).equals("n"))
+                else if(response.substring(0,1).toLowerCase().equals("n"))
                 {
                     wantCookie = false;
                 }
@@ -716,11 +720,11 @@ public class YummyBytesBakery
             do{
                 String response = reader.nextLine();
                 valid = true;
-                if(response.substring(0,1).equals("y"))
+                if(response.substring(0,1).toLowerCase().equals("y"))
                 {
                     wantMuffin = true;
                 }
-                else if(response.substring(0,1).equals("n"))
+                else if(response.substring(0,1).toLowerCase().equals("n"))
                 {
                     wantMuffin = false;
                 }
@@ -748,11 +752,11 @@ public class YummyBytesBakery
             do{
                 String response = reader.nextLine();
                 valid = true;
-                if(response.substring(0,1).equals("y"))
+                if(response.substring(0,1).toLowerCase().equals("y"))
                 {
                     wantDoughnut = true;
                 }
-                else if(response.substring(0,1).equals("n"))
+                else if(response.substring(0,1).toLowerCase().equals("n"))
                 {
                     wantDoughnut = false;
                 }
